@@ -1,0 +1,16 @@
+.filter-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filter-input {
+    display: flex;
+    align-items: center;
+  }
+  
+  .filter-input label {
+    margin-right: 10px;
+  }
+  

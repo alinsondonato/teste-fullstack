@@ -1,0 +1,51 @@
+<p-card header="Beneficiário" *ngIf="beneficiario" class="card flex justify-content-center">
+  <form [formGroup]="formGroup" (ngSubmit)="salvarBeneficiario()">
+    <div class="flex align-items-center justify-content-center h-4rem font-bold border-round m-2">
+      <span class="p-float-label">
+        <input pInputText formControlName="nome" name="nome" [(ngModel)]="beneficiario.nome" required/>
+        <label htmlFor="nome">Nome</label>
+        <small class="p-error block" *ngIf="formGroup.controls['nome'].invalid && formGroup.controls['nome'].dirty">
+          Nome é obrigatório
+      </small>
+      </span>
+    </div>
+    <div class="flex align-items-center justify-content-center h-4rem font-bold border-round m-2">
+      <span class="p-float-label">
+        <input pInputText type="email" formControlName="email" [(ngModel)]="beneficiario.email" name="email" required>
+        <label for="email">E-mail</label>
+        <small class="p-error block" *ngIf="formGroup.controls['email'].invalid && formGroup.controls['email'].dirty">
+            E-mail é obrigatório
+        </small>
+      </span>
+    </div>
+    <div class="flex align-items-center justify-content-center h-4rem font-bold border-round m-2">
+      <span class="p-float-label">
+        <input pInputText type="text" formControlName="cpf" [(ngModel)]="beneficiario.cpf" name="cpf" required>
+        <label for="CPF">CPF</label>
+        <small class="p-error block" *ngIf="formGroup.controls['cpf'].invalid && formGroup.controls['cpf'].dirty">
+            CPF é obrigatório
+        </small>
+      </span>
+    </div>
+    <div class="flex align-items-center justify-content-center h-4rem font-bold border-round m-2">
+      <span class="p-float-label">
+        <input pInputText type="number" formControlName="idade" [(ngModel)]="beneficiario.idade" name="idade" required>
+        <label for="idade">Idade</label>
+      </span>
+    </div>
+    <div class="flex align-items-center justify-content-center h-4rem font-bold border-round m-2">
+      <span *ngIf="beneficiario.plano">
+        <p-dropdown [options]="planos" placeholder="Selecione um Plano" (change)="teste()" [(ngModel)]="beneficiario.plano" 
+          formControlName="plano" name="plano" 
+          [style]="{'width':'100%'}"></p-dropdown>
+        <!-- <label for="curso">Plano</label> -->
+      </span>
+      </div>
+    <button pButton type="submit" label="Salvar" class="p-button-primary"></button>
+    <button pButton label="Voltar" class="p-button-secondary" (click)="voltar()"></button>
+    <p-messages *ngIf="temErro" [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+  </form>
+  <div class="flex align-content-center justify-content-center">
+    <p-progressSpinner *ngIf="carregando"></p-progressSpinner>
+  </div>
+</p-card>

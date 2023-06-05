@@ -1,0 +1,25 @@
+<div class="card flex align-content-center justify-content-center">
+    <p-card header="Login" [style]="{backgroundColor: '#00995d' }">
+      <form [formGroup]="formGroup" autocomplete="off">
+        <div class="card">
+            <div class="flex align-items-center justify-content-center h-4rem font-bold border-round m-2">
+                <span class="p-float-label">
+                    <input pInputText formControlName="username" name="username" [(ngModel)]="username" required/>
+                    <label htmlFor="username">Username</label>
+                </span>
+            </div>
+          <div class="flex align-items-center justify-content-center h-4rem font-bold border-round m-2">
+            <span class="p-float-label">
+                <input pInputText formControlName="password" name="password" [(ngModel)]="password" required/>
+                <label htmlFor="password">Password</label>
+            </span>
+        </div>
+          <button pButton [disabled]="formGroup.invalid || carregando" type="submit" label="Entrar" class="p-button-success" (click)="login()"></button>
+        </div>
+        <p-messages *ngIf="temErro" [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+    </form>
+      </p-card>
+    </div>
+    <div class="flex align-content-center justify-content-center">
+      <p-progressSpinner *ngIf="carregando"></p-progressSpinner>
+    </div>
