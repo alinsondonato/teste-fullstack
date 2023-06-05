@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Beneficiario } from '../beneficiario.model';
 import { BeneficiarioService } from '../beneficiario.service';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-beneficiario-list',
   templateUrl: './beneficiario-list.component.html',
-  styleUrls: ['./beneficiario-list.component.css']
+  styleUrls: ['./beneficiario-list.component.css'],
+  providers: [MessageService]
 })
 export class BeneficiarioListComponent implements OnInit {
 
@@ -14,7 +16,8 @@ export class BeneficiarioListComponent implements OnInit {
   
   constructor(
     private beneficiarioService: BeneficiarioService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
     ) { }
 
   ngOnInit(): void {
@@ -36,6 +39,7 @@ export class BeneficiarioListComponent implements OnInit {
     if (confirm('Deseja realmente excluir o beneficiario?')) {
       this.beneficiarioService.excluirBeneficiario(id).subscribe(
         () => {
+          this.showMsg();
           this.carregarBeneficiarios();
         },
         (error) => {
@@ -47,6 +51,10 @@ export class BeneficiarioListComponent implements OnInit {
   
   adicionarBeneficiario() {
     this.router.navigate(['/beneficiarios/novo']);
+  }
+
+  showMsg() {
+    this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Beneficiário excluído com sucesso' });
   }
 
 }

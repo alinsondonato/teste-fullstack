@@ -21,6 +21,7 @@
     </div>
     <button pButton type="submit" [disabled]="formGroup.invalid" label="Salvar" class="p-button-primary"></button>
     <button pButton label="Voltar" class="p-button-secondary" (click)="voltar()"></button>
+    <p-toast></p-toast>
     </form>
   <div class="flex align-content-center justify-content-center">
     <p-progressSpinner *ngIf="carregando"></p-progressSpinner>

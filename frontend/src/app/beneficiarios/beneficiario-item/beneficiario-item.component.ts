@@ -8,11 +8,13 @@ import { PlanoService } from 'src/app/planos/plano.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Plano } from 'src/app/planos/plano.model';
 import { Message } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-beneficiario-item',
   templateUrl: './beneficiario-item.component.html',
-  styleUrls: ['./beneficiario-item.component.css']
+  styleUrls: ['./beneficiario-item.component.css'],
+  providers: [MessageService]
 })
 export class BeneficiarioItemComponent implements OnInit {
   beneficiario: Beneficiario | undefined;
@@ -34,35 +36,38 @@ export class BeneficiarioItemComponent implements OnInit {
     private router: Router,
     private beneficiarioService: BeneficiarioService,
     private planoService: PlanoService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    this.carregando = true;
     this.planoService.getPlanos().subscribe(
       (resp) => {
         this.planos = resp.map(plano => ({ label: plano.nome, value: plano }));
       });
     if (id) {
+      this.carregando = true;
       this.beneficiarioService.getBeneficiarioById(parseInt(id)).subscribe(beneficiario => {
         this.carregando = false;
         this.beneficiario = beneficiario;
         });
     } else {
-      this.carregando = false;
       this.beneficiario = new Beneficiario();
       this.beneficiario.plano = new Plano();
     }
   }
 
   salvarBeneficiario() {
-    this.carregando = true;
     if (this.beneficiario?.id) {
+      this.carregando = true;
       this.beneficiarioService.atualizarBeneficiario(this.beneficiario).subscribe(
         () => {
           this.carregando = false;
-          this.router.navigate(['/beneficiarios']);
+          this.showMsg();
+          setTimeout(() => {
+            this.router.navigate(['/beneficiarios']);
+          }, 1000);
         },
         (error) => {
           this.carregando = false;
@@ -71,10 +76,21 @@ export class BeneficiarioItemComponent implements OnInit {
         }
       );
     } else if (this.beneficiario) {
-      this.beneficiarioService.adicionarBeneficiario(this.beneficiario).subscribe(() => {
-        this.carregando = false;
-        this.router.navigate(['/beneficiarios']);
-      });
+      this.carregando = true;
+      this.beneficiarioService.adicionarBeneficiario(this.beneficiario).subscribe(
+        () => {
+          this.carregando = false;
+          this.showMsg();
+          setTimeout(() => {
+            this.router.navigate(['/beneficiarios']);
+          }, 1000);
+        },
+        (error) => {
+          this.carregando = false;
+          this.messages[0].detail = (error.error.fieldsMessage[0]);
+          this.temErro = true;
+        }
+      );
     }
   }
 
@@ -85,8 +101,7 @@ export class BeneficiarioItemComponent implements OnInit {
     this.router.navigate(['/beneficiarios']);
   }
 
-  teste() {
-    console.log(this.formGroup.value);
-    
+  showMsg() {
+    this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Beneficiário salvo com sucesso' });
   }
 }

@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
 import { MessagesModule } from 'primeng/messages';
 import { LoginComponent } from './public/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -50,6 +51,7 @@ import { PlanosComponent } from './planos/planos.component';
     InputNumberModule,
     InputTextModule,
     PasswordModule,
+    ToastModule,
     ProgressSpinnerModule,
     ButtonModule,
     CardModule,
